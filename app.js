@@ -8,16 +8,22 @@ const app = express();
 //PACKAGES.
 const morgan = require("morgan");
 
+//DATABASE
+const connectDB = require("./db/connect");
+
 //ROUTERS
 app.get("/", (req, res) => {
   return console.log("Anon");
 });
 
 //MIDDLEWARE
-const connectDB = require("./db/connect");
+const notFoundMiddleware = require("./middlewares/not-found");
+const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
 app.use(morgan("tiny"));
 
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 8888;
 
 const start = async () => {

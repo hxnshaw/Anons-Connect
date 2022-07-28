@@ -1,11 +1,11 @@
 const CustomError = require("./custom-api");
 const { StatusCodes } = require("http-status-codes");
 
-class NotFoundError extends CustomError {
+class UnauthenticatedError extends CustomError {
   constructor(message) {
     super(message);
-    this.statusCode = StatusCodes.NOT_FOUND;
+    this.statusCode = StatusCodes.UNAUTHORIZED;
   }
 }
 
-module.exports = NotFoundError;
+module.exports = UnauthenticatedError;

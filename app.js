@@ -12,6 +12,8 @@ const morgan = require("morgan");
 const connectDB = require("./db/connect");
 
 //ROUTERS
+const authRouter = require("./routes/authRouter");
+
 app.get("/", (req, res) => {
   return console.log("Anon");
 });
@@ -21,6 +23,9 @@ const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
 app.use(morgan("tiny"));
+
+//MOUNT ROUTERS.
+app.use("/api/v1/auth", authRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

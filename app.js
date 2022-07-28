@@ -7,6 +7,7 @@ const app = express();
 
 //PACKAGES.
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 //DATABASE
 const connectDB = require("./db/connect");
@@ -22,7 +23,9 @@ app.get("/", (req, res) => {
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
+app.use(express.json());
 app.use(morgan("tiny"));
+app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
 
 //MOUNT ROUTERS.
 app.use("/api/v1/auth", authRouter);

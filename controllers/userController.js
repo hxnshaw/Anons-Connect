@@ -1,5 +1,14 @@
+const User = require("../models/User");
+const CustomError = require("../errors");
+const { StatusCodes } = require("http-status-codes");
+
 const getSingleUser = async (req, res) => {
-  res.send("Single User");
+  const { id: userId } = req.params;
+  const user = await User.findOne({ _id: userId }).select("-password");
+  if (!user) {
+    throw new CustomError.NotFoundError(`USER NOT FOUND.`);
+  }
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const showMyProfile = async (req, res) => {
@@ -7,7 +16,8 @@ const showMyProfile = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  res.send("All Users");
+  const users = await User.find({ role: "user" }).select("-password");
+  res.status(StatusCodes.OK).json({ count: users.length, users });
 };
 
 const editUserProfile = async (req, res) => {

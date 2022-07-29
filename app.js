@@ -14,6 +14,7 @@ const connectDB = require("./db/connect");
 
 //ROUTERS
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 
 app.get("/", (req, res) => {
   return console.log("Anon");
@@ -29,6 +30,7 @@ app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
 
 //MOUNT ROUTERS.
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

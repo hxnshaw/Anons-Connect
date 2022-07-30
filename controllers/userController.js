@@ -12,7 +12,7 @@ const getSingleUser = async (req, res) => {
 };
 
 const showMyProfile = async (req, res) => {
-  res.send("Show My Profile");
+  res.send("Show User Profile");
 };
 
 const getAllUsers = async (req, res) => {

@@ -24,7 +24,7 @@ router
 
 router
   .route("/:id")
-  .get(getSingleUser)
+  .get(authenticateUser, getSingleUser)
   .patch(authenticateUser, editUserProfile);
 
 module.exports = router;

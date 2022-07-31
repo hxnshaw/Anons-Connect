@@ -8,15 +8,23 @@ const {
   updateUserPassword,
   deleteUserProfile,
 } = require("../controllers/userController");
+const authenticateUser = require("../middlewares/authentication");
 
-router.route("/").get(getAllUsers);
+router.route("/").get(authenticateUser, getAllUsers);
 
-router.route("/profile").get(showMyProfile);
+router.route("/profile").get(authenticateUser, showMyProfile);
 
-router.route("/profile/updatePassword").patch(updateUserPassword);
+router
+  .route("/profile/updatePassword")
+  .patch(authenticateUser, updateUserPassword);
 
-router.route("/profile/deleteMyAccount").delete(deleteUserProfile);
+router
+  .route("/profile/deleteMyAccount")
+  .delete(authenticateUser, deleteUserProfile);
 
-router.route("/:id").get(getSingleUser).patch(editUserProfile);
+router
+  .route("/:id")
+  .get(getSingleUser)
+  .patch(authenticateUser, editUserProfile);
 
 module.exports = router;

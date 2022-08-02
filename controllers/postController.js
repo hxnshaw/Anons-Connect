@@ -1,21 +1,46 @@
+const Post = require("../models/Post");
+const CustomError = require("../errors");
+const { StatusCodes } = require("http-status-codes");
+
 const createPost = async (req, res) => {
-  res.send("Create Post");
+  req.body.user = req.user.userId;
+  const post = await Post.create({ ...req.body, anon: req.user.userId });
+  res.status(StatusCodes.CREATED).json({ post });
 };
 
 const singlePost = async (req, res) => {
-  res.send("Single Post");
+  const { id: postId } = req.params;
+  const post = await Post.findOne({ _id: postId });
+  res.status(StatusCodes.OK).json({ post });
 };
 
 const getAllPosts = async (req, res) => {
-  res.send("Get All Posts");
+  const posts = await Post.find({});
+  res.status(StatusCodes.OK).json({ posts });
 };
 
 const editPost = async (req, res) => {
-  res.send("Edit Post");
+  const { heading, body } = req.body;
+  const { id: postId } = req.params;
+  const post = await Post.findOne({ _id: postId });
+  if (!post) {
+    throw new CustomError.NotFoundError(`POST NOT FOUND`);
+  }
+  post.heading = heading;
+  post.body = body;
+
+  await post.save();
+  res.status(StatusCodes.OK).json({ post, msg: "POST UPDATED SUCCESSFULLY" });
 };
 
 const deletePost = async (req, res) => {
-  res.send("Delete Post");
+  const { id: postId } = req.params;
+  const post = await Post.findOne({ _id: postId });
+  if (!post) {
+    throw new CustomError.NotFoundError(`POST NOT FOUND`);
+  }
+  await post.remove();
+  res.status(StatusCodes.OK).json({ msg: "DELETED!" });
 };
 
 module.exports = {

@@ -16,7 +16,6 @@ const PostSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: "/connect/image.jpeg",
     },
     anon: {
       type: mongoose.Schema.ObjectId,

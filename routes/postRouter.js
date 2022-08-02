@@ -7,9 +7,17 @@ const {
   editPost,
   deletePost,
 } = require("../controllers/postController");
+const authenticateUser = require("../middlewares/authentication");
 
-router.route("/").post(createPost).get(getAllPosts);
+router
+  .route("/")
+  .post(authenticateUser, createPost)
+  .get(authenticateUser, getAllPosts);
 
-router.route("/:id").get(singlePost).patch(editPost).delete(deletePost);
+router
+  .route("/:id")
+  .get(authenticateUser, singlePost)
+  .patch(authenticateUser, editPost)
+  .delete(authenticateUser, deletePost);
 
 module.exports = router;

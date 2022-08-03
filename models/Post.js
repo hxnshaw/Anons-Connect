@@ -14,6 +14,11 @@ const PostSchema = new mongoose.Schema(
       trim: true,
       maxlength: 1000,
     },
+    category: {
+      type: String,
+      enum: ["tech", "sport", "science", "politics"],
+      required: [true, "PLEASE CHOOSE AN APPROPRIATE CATEGORY"],
+    },
     image: {
       type: String,
     },

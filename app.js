@@ -16,6 +16,7 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
+const searchRouter = require("./routes/searchRouter");
 const commentRouter = require("./routes/commentRouter");
 
 app.get("/", (req, res) => {
@@ -34,6 +35,7 @@ app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/search/posts", searchRouter);
 app.use("/api/v1/comments", commentRouter);
 
 app.use(notFoundMiddleware);

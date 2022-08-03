@@ -6,6 +6,7 @@ const {
   getAllComments,
   deleteComment,
 } = require("../controllers/commentController");
+const authenticateUser = require("../middlewares/authentication");
 
 router.route("/").post(createComment).get(getAllComments);
 

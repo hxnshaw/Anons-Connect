@@ -5,14 +5,12 @@ const { StatusCodes } = require("http-status-codes");
 const searchForPosts = async (req, res, next) => {
   let search_key = req.query["category"];
   console.log(search_key);
-  Post.find({ category: search_key })
-    .then((posts) => {
-      res.json({ count: posts.length, posts });
-    })
-    .catch((err) => {
-      throw new CustomError.BadRequestError(err.message);
-      // res.status(StatusCodes.BAD_REQUEST).json({ msg: err.message });
-    });
+  try {
+    let posts = await Post.find({ category: search_key });
+    res.status(StatusCodes.OK).json({ count: posts.length, posts });
+  } catch (error) {
+    throw new CustomError.BadRequestError(error.message);
+  }
 };
 
 module.exports = searchForPosts;

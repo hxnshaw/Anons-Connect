@@ -1,3 +1,5 @@
+const Comment = require("../models/Comment");
+
 const createComment = async (req, res) => {
   res.send("Create a new comment");
 };

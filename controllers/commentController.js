@@ -17,11 +17,25 @@ const createComment = async (req, res) => {
 };
 
 const singleComment = async (req, res) => {
-  res.send("Get a single comment");
+  const { id: commentId } = req.params;
+
+  const comment = await Comment.findOne({ _id: commentId }).populate({
+    path: "user",
+    select: "username",
+  });
+
+  if (!comment) {
+    throw new CustomError.NotFoundError(`NO COMMENT WITH ID ${commentId} `);
+  }
+  res.status(StatusCodes.OK).json({ comment });
 };
 
 const getAllComments = async (req, res) => {
-  res.send("Get all comments");
+  const comments = await Comment.find({}).populate("post").populate({
+    path: "user",
+    select: "username",
+  });
+  res.status(StatusCodes.OK).json({ comments });
 };
 
 const deleteComment = async (req, res) => {

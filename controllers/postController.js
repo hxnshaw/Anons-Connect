@@ -15,7 +15,7 @@ const singlePost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
-  const posts = await Post.find({});
+  const posts = await Post.find({}).populate("comments");
   res.status(StatusCodes.OK).json({ posts });
 };
 

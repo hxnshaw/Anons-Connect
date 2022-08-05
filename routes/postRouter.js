@@ -7,7 +7,10 @@ const {
   editPost,
   deletePost,
 } = require("../controllers/postController");
-const authenticateUser = require("../middlewares/authentication");
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require("../middlewares/authentication");
 
 router
   .route("/")
@@ -18,6 +21,6 @@ router
   .route("/:id")
   .get(authenticateUser, singlePost)
   .patch(authenticateUser, editPost)
-  .delete(authenticateUser, deletePost);
+  .delete(authenticateUser, authorizePermissions("admin"), deletePost);
 
 module.exports = router;

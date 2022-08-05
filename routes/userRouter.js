@@ -8,7 +8,10 @@ const {
   updateUserPassword,
   deleteUserProfile,
 } = require("../controllers/userController");
-const authenticateUser = require("../middlewares/authentication");
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require("../middlewares/authentication");
 
 router.route("/").get(authenticateUser, getAllUsers);
 
@@ -20,11 +23,11 @@ router
 
 router
   .route("/profile/deleteMyAccount")
-  .delete(authenticateUser, deleteUserProfile);
+  .delete(authenticateUser, authorizePermissions("admin"), deleteUserProfile);
 
 router
   .route("/:id")
-  .get(authenticateUser, getSingleUser)
+  .get(authenticateUser, authorizePermissions("admin"), getSingleUser)
   .patch(authenticateUser, editUserProfile);
 
 module.exports = router;

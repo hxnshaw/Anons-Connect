@@ -6,7 +6,10 @@ const {
   getAllComments,
   deleteComment,
 } = require("../controllers/commentController");
-const authenticateUser = require("../middlewares/authentication");
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require("../middlewares/authentication");
 
 router
   .route("/")
@@ -16,6 +19,6 @@ router
 router
   .route("/:id")
   .get(authenticateUser, singleComment)
-  .delete(authenticateUser, deleteComment);
+  .delete(authenticateUser, authorizePermissions("admin"), deleteComment);
 
 module.exports = router;

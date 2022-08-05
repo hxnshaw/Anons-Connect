@@ -8,8 +8,14 @@ const {
 } = require("../controllers/commentController");
 const authenticateUser = require("../middlewares/authentication");
 
-router.route("/").post(createComment).get(getAllComments);
+router
+  .route("/")
+  .post(authenticateUser, createComment)
+  .get(authenticateUser, getAllComments);
 
-router.route("/:id").get(singleComment).delete(deleteComment);
+router
+  .route("/:id")
+  .get(authenticateUser, singleComment)
+  .delete(authenticateUser, deleteComment);
 
 module.exports = router;

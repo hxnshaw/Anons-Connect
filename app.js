@@ -31,6 +31,13 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
 
+//CUSTOM LOGGER (FOR PRACTICE)
+app.use((req, res, next) => {
+  console.log("Request IP: " + req.url);
+  console.log("Request date: " + new Date());
+  next();
+});
+
 //MOUNT ROUTERS.
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);

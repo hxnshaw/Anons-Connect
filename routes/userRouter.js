@@ -13,7 +13,9 @@ const {
   authorizePermissions,
 } = require("../middlewares/authentication");
 
-router.route("/").get(authenticateUser, getAllUsers);
+router
+  .route("/")
+  .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
 
 router.route("/profile").get(authenticateUser, showMyProfile);
 

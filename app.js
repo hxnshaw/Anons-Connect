@@ -28,7 +28,7 @@ const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
 
 //CUSTOM LOGGER (FOR PRACTICE)

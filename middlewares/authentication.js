@@ -7,8 +7,9 @@ const authenticateUser = async (req, res, next) => {
     throw new CustomError.UnauthenticatedError("INVALID AUTHENTICATION");
   }
   try {
-    const { username, userId, role, email } = isValidToken({ token });
-    req.user = { username, userId, role, email };
+    const { username, userId, role, email, followers, following } =
+      isValidToken({ token });
+    req.user = { username, role, userId, email, followers, following };
     next();
   } catch (error) {
     throw new CustomError.UnauthenticatedError("INVALID AUTHENTICATION");

@@ -20,7 +20,10 @@ const showMyProfile = async (req, res) => {
     throw CustomError.UnauthorizedError("UNAUTHORIZED TO ACCESS THIS ROUTE!");
   }
   //show user profile if user exists.
-  res.status(StatusCodes.OK).json({ user: req.user });
+  const tokenUser = createTokenUser(req.user);
+
+  //res.status(StatusCodes.OK).json({ user: req.user });
+  res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
 const getAllUsers = async (req, res) => {
@@ -77,7 +80,29 @@ const deleteUserProfile = async (req, res) => {
 };
 
 const followUser = async (req, res) => {
-  res.send("Now following user xyz");
+  const { id: userId } = req.params;
+  const myId = req.user.userId;
+  const user = await User.findOne({ _id: userId });
+  const currentUser = await User.findOne({ _id: myId });
+  if (req.params.id !== req.user.userId) {
+    console.log(req.params.id);
+    console.log(req.user.userId);
+    if (!user.followers.includes(req.user.userId)) {
+      await user.updateOne({ $push: { followers: req.user.userId } });
+      await currentUser.updateOne({ $push: { following: req.params.id } });
+      res
+        .status(StatusCodes.OK)
+        .json({ msg: `YOU NOW FOLLOW ${req.params.id}` });
+    } else {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: `YOU ALREADY FOLLOW ${req.params.id}` });
+    }
+  } else {
+    res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: `YOU CANNOT FOLLOW YOURSELF!` });
+  }
 };
 
 const unfollowUser = async (req, res) => {

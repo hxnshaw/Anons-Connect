@@ -10,8 +10,10 @@ const createPost = async (req, res) => {
 
 const singlePost = async (req, res) => {
   const { id: postId } = req.params;
-  const post = await Post.findOne({ _id: postId });
-  res.status(StatusCodes.OK).json({ post });
+  const post = await Post.findOne({ _id: postId })
+    .populate("comments")
+    .populate("likes");
+  res.status(StatusCodes.OK).json({ post, number_of_likes: post.likes.length });
 };
 
 const getAllPosts = async (req, res) => {
@@ -43,10 +45,25 @@ const deletePost = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "DELETED!" });
 };
 
+//LIKE AND UNLIKE A POST.
+const likePost = async (req, res) => {
+  const { id: postId } = req.params;
+  const post = await Post.findOne({ _id: postId });
+  if (!post.likes.includes(req.user.userId)) {
+    await post.updateOne({ $push: { likes: req.user.userId } });
+    console.log(req.user.userId);
+    res.status(StatusCodes.OK).json({ msg: "LIKE" });
+  } else if (post.likes.includes(req.user.userId)) {
+    await post.updateOne({ $pull: { likes: req.user.userId } });
+    res.status(StatusCodes.OK).json({ msg: "REMOVED LIKE" });
+  }
+};
+
 module.exports = {
   createPost,
   singlePost,
   getAllPosts,
   editPost,
   deletePost,
+  likePost,
 };

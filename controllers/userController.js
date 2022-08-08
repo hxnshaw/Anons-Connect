@@ -76,6 +76,14 @@ const deleteUserProfile = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "PROFILE DELETED SUCCESSFULLY" });
 };
 
+const followUser = async (req, res) => {
+  res.send("Now following user xyz");
+};
+
+const unfollowUser = async (req, res) => {
+  res.send("You unfollowed user xyz");
+};
+
 module.exports = {
   getSingleUser,
   showMyProfile,
@@ -83,4 +91,6 @@ module.exports = {
   editUserProfile,
   updateUserPassword,
   deleteUserProfile,
+  followUser,
+  unfollowUser,
 };

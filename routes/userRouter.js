@@ -7,6 +7,8 @@ const {
   editUserProfile,
   updateUserPassword,
   deleteUserProfile,
+  followUser,
+  unfollowUser,
 } = require("../controllers/userController");
 const {
   authenticateUser,
@@ -26,6 +28,10 @@ router
 router
   .route("/profile/deleteMyAccount")
   .delete(authenticateUser, authorizePermissions("admin"), deleteUserProfile);
+
+router.route("/:id/follow").patch(authenticateUser, followUser);
+
+router.route("/:id/unfollow").patch(authenticateUser, unfollowUser);
 
 router
   .route("/:id")

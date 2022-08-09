@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const CustomError = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const checkPermissions = require("../utils/checkPermissions");
 
 const createPost = async (req, res) => {
   req.body.user = req.user.userId;
@@ -28,6 +29,9 @@ const editPost = async (req, res) => {
   if (!post) {
     throw new CustomError.NotFoundError(`POST NOT FOUND`);
   }
+
+  checkPermissions(req.user, post.anon);
+
   post.heading = heading;
   post.body = body;
 
@@ -41,6 +45,9 @@ const deletePost = async (req, res) => {
   if (!post) {
     throw new CustomError.NotFoundError(`POST NOT FOUND`);
   }
+
+  checkPermissions(req.user, post.anon);
+
   await post.remove();
   res.status(StatusCodes.OK).json({ msg: "DELETED!" });
 };

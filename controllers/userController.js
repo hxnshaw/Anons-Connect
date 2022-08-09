@@ -21,8 +21,6 @@ const showMyProfile = async (req, res) => {
   }
   //show user profile if user exists.
   const tokenUser = createTokenUser(user);
-  console.log(user);
-  //res.status(StatusCodes.OK).json({ user: req.user });
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
@@ -106,7 +104,27 @@ const followUser = async (req, res) => {
 };
 
 const unfollowUser = async (req, res) => {
-  res.send("You unfollowed user xyz");
+  const { id: userId } = req.params;
+  const myId = req.user.userId;
+  const user = await User.findOne({ _id: userId });
+  const currentUser = await User.findOne({ _id: myId });
+  if (req.params.id !== req.user.userId) {
+    if (user.followers.includes(req.user.userId)) {
+      await user.updateOne({ $pull: { followers: req.user.userId } });
+      await currentUser.updateOne({ $pull: { following: req.params.id } });
+      res
+        .status(StatusCodes.OK)
+        .json({ msg: `YOU UNFOLLOWED ${req.params.id}` });
+    } else {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: `YOU ALREADY UNFOLLOWED ${req.params.id}` });
+    }
+  } else {
+    res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: `YOU CANNOT UNFOLLOW YOURSELF!` });
+  }
 };
 
 module.exports = {

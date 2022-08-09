@@ -20,8 +20,8 @@ const showMyProfile = async (req, res) => {
     throw CustomError.UnauthorizedError("UNAUTHORIZED TO ACCESS THIS ROUTE!");
   }
   //show user profile if user exists.
-  const tokenUser = createTokenUser(req.user);
-
+  const tokenUser = createTokenUser(user);
+  console.log(user);
   //res.status(StatusCodes.OK).json({ user: req.user });
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };

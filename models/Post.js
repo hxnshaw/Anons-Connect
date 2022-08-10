@@ -35,6 +35,7 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+//connect posts and comments
 PostSchema.virtual("comments", {
   ref: "Comment",
   localField: "_id",

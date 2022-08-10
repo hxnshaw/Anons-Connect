@@ -67,7 +67,7 @@ const likePost = async (req, res) => {
   }
 };
 
-//view posts from people you follow.
+//view your posts and posts from people you follow.
 const myTimeline = async (req, res) => {
   const currentUser = await User.findOne({ _id: req.user.userId });
   const userPosts = await Post.find({ _id: currentUser.userId });

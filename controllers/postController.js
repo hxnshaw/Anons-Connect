@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 const CustomError = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const checkPermissions = require("../utils/checkPermissions");
@@ -66,6 +67,18 @@ const likePost = async (req, res) => {
   }
 };
 
+//view posts from people you follow.
+const myTimeline = async (req, res) => {
+  const currentUser = await User.findOne({ _id: req.user.userId });
+  const userPosts = await Post.find({ _id: currentUser.userId });
+  const friendPosts = await Promise.all(
+    currentUser.following.map((friendId) => {
+      return Post.find({ userId: friendId });
+    })
+  );
+  res.status(StatusCodes.OK).json(userPosts.concat(...friendPosts));
+};
+
 module.exports = {
   createPost,
   singlePost,
@@ -73,4 +86,5 @@ module.exports = {
   editPost,
   deletePost,
   likePost,
+  myTimeline,
 };

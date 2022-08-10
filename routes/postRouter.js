@@ -7,6 +7,7 @@ const {
   editPost,
   deletePost,
   likePost,
+  myTimeline,
 } = require("../controllers/postController");
 const {
   authenticateUser,
@@ -17,6 +18,8 @@ router
   .route("/")
   .post(authenticateUser, createPost)
   .get(authenticateUser, getAllPosts);
+
+router.route("/myTimeline").get(authenticateUser, myTimeline);
 
 router.route("/:id/like").patch(authenticateUser, likePost);
 

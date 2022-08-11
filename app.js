@@ -10,6 +10,12 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cloudinary = require("cloudinary").v2;
 const fileUpload = require("express-fileupload");
+//security packages
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimiter = require("express-rate-limit");
+const helmet = require("helmet");
+const xss = require("xss-clean");
 
 //CLOUDINARY SETUP
 cloudinary.config({
@@ -36,6 +42,19 @@ app.get("/", (req, res) => {
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
+//setup security
+app.set("trust proxy", 1);
+app.use(
+  rateLimiter({
+    windowMs: 20 * 60 * 1000, //20 minutes
+    max: 100, //100 requests per 20 minutes,
+  })
+);
+app.use(helmet());
+app.use(cors());
+app.use(xss());
+app.use(mongoSanitize());
+
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET_TOKEN));
@@ -43,8 +62,11 @@ app.use(fileUpload({ useTempFiles: true }));
 
 //CUSTOM LOGGER (FOR PRACTICE)
 app.use((req, res, next) => {
+  console.log("------------------------------");
   console.log("Request IP: " + req.url);
   console.log("Request date: " + new Date());
+  console.log("------------------------------");
+
   next();
 });
 

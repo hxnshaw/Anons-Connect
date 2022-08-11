@@ -16,7 +16,16 @@ const PostSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["tech", "sport", "science", "politics"],
+      enum: [
+        "tech",
+        "sport",
+        "science",
+        "politics",
+        "life",
+        "food",
+        "education",
+        "travel",
+      ],
       required: [true, "PLEASE CHOOSE AN APPROPRIATE CATEGORY"],
     },
     likes: {

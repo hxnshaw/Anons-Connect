@@ -8,6 +8,7 @@ const {
   deletePost,
   likePost,
   myTimeline,
+  uploadImage,
 } = require("../controllers/postController");
 const {
   authenticateUser,
@@ -20,6 +21,8 @@ router
   .get(authenticateUser, getAllPosts);
 
 router.route("/myTimeline").get(authenticateUser, myTimeline);
+
+router.route("/uploadImage").post(authenticateUser, uploadImage);
 
 router.route("/:id/like").patch(authenticateUser, likePost);
 

@@ -3,6 +3,8 @@ const User = require("../models/User");
 const CustomError = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const checkPermissions = require("../utils/checkPermissions");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 
 const createPost = async (req, res) => {
   req.body.user = req.user.userId;
@@ -53,6 +55,18 @@ const deletePost = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "DELETED!" });
 };
 
+const uploadImage = async (req, res) => {
+  const result = await cloudinary.uploader.upload(
+    req.files.image.tempFilePath,
+    {
+      use_filename: true,
+      folder: "Anon-Connect",
+    }
+  );
+  fs.unlinkSync(req.files.image.tempFilePath);
+  return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
+};
+
 //LIKE AND UNLIKE A POST.
 const likePost = async (req, res) => {
   const { id: postId } = req.params;
@@ -85,6 +99,7 @@ module.exports = {
   getAllPosts,
   editPost,
   deletePost,
+  uploadImage,
   likePost,
   myTimeline,
 };

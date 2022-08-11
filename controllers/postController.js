@@ -17,6 +17,9 @@ const singlePost = async (req, res) => {
   const post = await Post.findOne({ _id: postId })
     .populate("comments")
     .populate("likes");
+  if (post === null) {
+    throw new CustomError.NotFoundError("POST NOT FOUND");
+  }
   res.status(StatusCodes.OK).json({ post, number_of_likes: post.likes.length });
 };
 

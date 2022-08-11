@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const Post = require("./Post");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -67,6 +68,13 @@ UserSchema.pre("save", async function () {
   if (!user.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
+});
+
+//Delete Post when the author is deleted
+UserSchema.pre("remove", async function (next) {
+  const user = this;
+  await Post.deleteMany({ anon: user._id });
+  next();
 });
 
 module.exports = mongoose.model("User", UserSchema);

@@ -27,7 +27,11 @@ router
 
 router
   .route("/profile/deleteMyAccount")
-  .delete(authenticateUser, authorizePermissions("admin"), deleteUserProfile);
+  .delete(
+    authenticateUser,
+    authorizePermissions("admin", "user"),
+    deleteUserProfile
+  );
 
 router.route("/:id/follow").patch(authenticateUser, followUser);
 

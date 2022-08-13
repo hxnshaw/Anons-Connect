@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      lowercase: true,
       required: [true, "EMAIL ADDRESS IS REQUIRED"],
       trim: true,
       unique: [true, "EMAIL ADDRESS NOT AVAILABE, PLEASE CHOOSE ANOTHER."],

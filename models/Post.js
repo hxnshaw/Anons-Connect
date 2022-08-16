@@ -6,11 +6,11 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "DO NOT LEAVE BLANK!"],
       trim: true,
-      maxlength: 150,
+      maxlength: 100,
     },
     body: {
       type: String,
-      required: [true, "REQUIRED!"],
+      required: [true, "DO NOT LEAVE BLANK!"],
       trim: true,
       maxlength: 2000,
     },

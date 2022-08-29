@@ -26,6 +26,7 @@ const PostSchema = new mongoose.Schema(
         "education",
         "travel",
         "health",
+        "Nigeria",
       ],
       required: [true, "PLEASE CHOOSE AN APPROPRIATE CATEGORY"],
     },

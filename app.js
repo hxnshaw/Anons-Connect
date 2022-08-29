@@ -26,6 +26,7 @@ cloudinary.config({
 
 //DATABASE
 const connectDB = require("./db/connect");
+//const sqlDatabase = require("./utils/database");
 
 //ROUTERS
 const authRouter = require("./routes/authRouter");
@@ -34,9 +35,19 @@ const postRouter = require("./routes/postRouter");
 const searchRouter = require("./routes/searchRouter");
 const commentRouter = require("./routes/commentRouter");
 
-app.get("/", (req, res) => {
-  return console.log("Anon");
-});
+//MYSQL
+// sqlDatabase
+//   .execute("SELECT * FROM products")
+//   .then((result) => {
+//     console.log(result);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// app.get("/", (req, res) => {
+//   return console.log("Anon");
+// });
 
 //MIDDLEWARE
 const notFoundMiddleware = require("./middlewares/not-found");

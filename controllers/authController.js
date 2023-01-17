@@ -8,7 +8,7 @@ const register = async (req, res) => {
 
   const emailAlreadyExists = await User.findOne({ email: email });
   if (emailAlreadyExists) {
-    throw new CustomError.BadRequestError("Email already exists");
+    throw new CustomError.BadRequestError("This Email already exists");
   }
 
   const firstAccountIsAdmin = (await User.countDocuments({})) === 0;
